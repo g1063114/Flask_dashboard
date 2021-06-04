@@ -4,7 +4,7 @@ bp = Blueprint('main',__name__,url_prefix='/')
 
 @bp.route('/')
 def start_app():
-    return render_template('index/index.html')
+    return render_template('base.html')
 
 @bp.route('/export')
 def export():
