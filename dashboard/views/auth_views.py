@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import redirect
 
 from dashboard import db
-from dashboard.forms import UserCreateForm, UserLoginForm, UserResetPasswordForm, UserCheckForm
+from dashboard.forms import UserCreateForm, UserLoginForm, UserResetPasswordForm
 from dashboard.models import User
 
 bp = Blueprint('auth',__name__,url_prefix='/auth')
@@ -54,20 +54,19 @@ def get_login_user():
     else:
         g.user = User.query.get(user_id)
 
-@bp.route('/check/',methods=('GET','POST'))
-def check():
-    form = UserCheckForm()
-    if request.method == 'POST' and form.validate_on_submit():
-        user = User.query.filter_by(userid=form.userid.data).first()
-        print(user)
-        if not user:
-            flash('존재하지 않는 사용자입니다.')
-        else:
-            return redirect(url_for('auth.reset'))
-    return render_template('auth/check.html',form=form)
-
 @bp.route('/reset/',methods=('GET','POST'))
 def reset():
     form = UserResetPasswordForm()
     if request.method == 'POST' and form.validate_on_submit():
+        error = None
+        user = User.query.filter_by(userid=form.userid.data).first()
+        print(user)
+        if not user:
+            error = '존재하지 않는 사용자입니다.'
+        else:
+            user.password = generate_password_hash(form.password.data)
+            db.session.commit()
+            return redirect(url_for('main.start_app'))
+        flash(error)
+    return render_template('auth/reset.html',form=form)
 
