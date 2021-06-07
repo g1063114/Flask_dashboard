@@ -9,7 +9,7 @@
         {% if g.user %}
         <ul class="navbar-nav">
             <li class="nav-item ">
-                <a class="nav-link" href="{{url_for('auth.logout')}}">{{ g.user.username }} (로그아웃)</a>
+                <a class="nav-link" href="{{url_for('auth.logout')}}">{{ g.user.userid }} | (로그아웃)</a>
             </li>
             <li class="nav-item ">
                 <a class="nav-link" href="{{url_for('board.link')}}">산출자료 다운로드</a>

@@ -8,6 +8,9 @@
             <th>번호</th>
             <th>제목</th>
             <th>작성일시</th>
+            {% if g.user.userid == 'admin' %}
+            <th>삭제</th>
+            {% endif %}
         </tr>
         </thead>
         <tbody>
@@ -18,10 +21,16 @@
             <td>
                 <a href="{{url_for('board.download',file=file.key)}}">{{ file.name }}</a>
             </td>
-            <td>{{ file.create_date }}</td>
+            <td>{{ file.create_date|datetime }}</td>
+            {% if g.user.userid == 'admin' %}
+            <td>
+              <a class="btn btn-danger" href="{{url_for('board.delete',file=file.key)}}">삭제</a>
+            </td>
+            {% endif %}
         </tr>
         {% endfor %}
-        {% else %}
+        {% endif %}
+        {% if is_file == None %}
         <tr>
             <td colspan="3">파일이 없습니다.</td>
         </tr>
@@ -47,9 +56,6 @@
             <input type="file" name="file"/>
             <button type="submit" class="btn btn-primary">저장</button>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
       </div>
     </div>
   </div>

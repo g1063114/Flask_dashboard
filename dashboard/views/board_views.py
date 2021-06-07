@@ -8,7 +8,7 @@ from dashboard.models import User,File
 
 from datetime import datetime
 
-upload_path = 'C:\\projects\\Flask_dashboard\\dashboard\\upload'
+upload_path = 'C:\\projects\\Flask_dashboard\\dashboard\\upload\\'
 
 bp = Blueprint('board',__name__,url_prefix='/board')
 
@@ -18,24 +18,39 @@ def link():
         return redirect(url_for('auth.login'))
     else:
         file_list = File.query.order_by(File.create_date.desc())
-    return render_template('board/board.html',file_list=file_list)
+        is_file = File.query.order_by(File.create_date.desc()).first()
+        return render_template('board/board.html',file_list=file_list,is_file=is_file)
 
-@bp.route('/download',methods=('GET','POST'))
-def download():
+@bp.route('/download/<int:file>',methods=('GET','POST'))
+def download(file):
     if g.user is None:
         return redirect(url_for('auth.login'))
-    return send_file('test.xlsx')
+    else:
+        down_file = File.query.filter_by(key=file).first()
+        return send_file(down_file.path + down_file.name)
 
 @bp.route('/upload',methods=('GET','POST'))
 def upload():
+    if g.user is None:
+        return redirect(url_for('auth.login'))
     if request.method == 'POST':
         file = request.files['file']
         file_name = file.filename
-        file_path = os.path.join(upload_path,file_name)
-        file.save(file_path)
+        file_path = os.path.join(upload_path)
+        file.save(file_path + file_name)
+
         file = File(name=file_name,path=file_path,create_date=datetime.now())
         db.session.add(file)
         db.session.commit()
-        file_list = File.query.order_by(File.create_date.desc())
         return redirect(url_for('board.link'))
 
+@bp.route('/delete/<int:file>',methods=('GET','POST'))
+def delete(file):
+    if g.user is None:
+        return redirect(url_for('auth.login'))
+    else:
+        delete_file = File.query.filter_by(key=file).first()
+        os.remove(upload_path + delete_file.name)
+        db.session.delete(delete_file)
+        db.session.commit()
+        return redirect(url_for('board.link'))
