@@ -38,7 +38,6 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user.key
-            print(session)
             return redirect(url_for('main.start_app'))
         flash(error)
     return render_template('auth/login.html',form=form)
