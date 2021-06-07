@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+<div class="container my-3">
+    <table class="table">
+        <thead>
+        <tr class="thead-dark">
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성일시</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if file_list %}
+        {% for file in file_list %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>
+                <a href="{{url_for('board.download',file=file.key)}}">{{ file.name }}</a>
+            </td>
+            <td>{{ file.create_date }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="3">파일이 없습니다.</td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+    {% if g.user.userid == 'admin' %}
+    <button id="upload" type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal">업로드</button>
+    {% endif %}
+</div>
+
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">파일 업로드</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/board/upload" method='POST' enctype="multipart/form-data">
+            <input type="file" name="file"/>
+            <button type="submit" class="btn btn-primary">저장</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

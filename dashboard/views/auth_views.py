@@ -6,6 +6,8 @@ from dashboard import db
 from dashboard.forms import UserCreateForm, UserLoginForm, UserResetPasswordForm
 from dashboard.models import User
 
+from datetime import datetime
+
 bp = Blueprint('auth',__name__,url_prefix='/auth')
 
 @bp.route('/signup/',methods=('GET','POST'))
@@ -15,7 +17,7 @@ def signup():
         user = User.query.filter_by(userid=form.userid.data).first()
         if not user:
             user = User(userid=form.userid.data, password=generate_password_hash(form.password1.data),
-                        email=form.email.data, univ=form.univ.data, dept=form.dept.data)
+                        email=form.email.data, univ=form.univ.data, dept=form.dept.data, create_date=datetime.now())
             db.session.add(user)
             db.session.commit()
             return redirect(url_for('main.start_app'))
