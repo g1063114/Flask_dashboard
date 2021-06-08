@@ -1,5 +1,30 @@
+
 <div class="container my-3">
     <div class="row">
+        <div class="col-md-3">
+            <canvas id="canvas1"></canvas>
+        </div>
+        <div class="col-md-3">
+            <form method="post" class="post-form">
+                <div class="form-group">
+                    <label for="userid">모집인원 (명)</label>
+                    <input type="text" class="form-control" name="recruit_cnt" id="recruit_cnt">
+                </div>
+                <div class="form-group">
+                    <label for="text">취업자 (명)</label>
+                    <input type="text" class="form-control" name="emp_cnt" id="emp_cnt">
+                </div>
+                <div class="form-group">
+                    <label for="text">등록금 (단위: 천원)</label>
+                    <input type="text" class="form-control" name="payment" id="payment" placeholder="ex) 6500, 7000">
+                </div>
+                <div class="form-group">
+                    <label for="text">지원자 예측치 (명)</label>
+                    <input type="text" class="form-control" name="pre_part" id="pre_part" disabled>
+                </div>
+                <button id="predict_part" type="button"class="btn btn-primary" onclick="dash1()">예측</button>
+            </form>
+        </div>
         <div class="col-md-3">
             <div>그래프</div>
         </div>
@@ -24,13 +49,58 @@
 </div>
 
 {% block script %}
+<script src="{{ url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.min.js"></script>
 <script type='text/javascript'>
-$(document).ready(function(){
-    $(".delete").on('click', function() {
-        if(confirm("정말로 삭제하시겠습니까?")) {
-            location.href = $(this).data('uri');
-        }
-    });
-});
+function dash1(){
+    var r_cnt = $("#recruit_cnt").val();
+    var e_cnt = $("#emp_cnt").val();
+    var pay = $("#payment").val();
+    var data = {
+        'recruit' : r_cnt,
+        'emp'     : e_cnt,
+        'payment' : pay
+    }
+        $.ajax({
+            type:'POST',
+            url: "{{url_for('main.dash1')}}",
+            data:data,
+            dataType: "json",
+            success:function(result){
+                $("#pre_part").val(result.result_data);
+            }
+        })
+    }
+
+$(document).ready(function() {
+    $.ajax({
+            type:'POST',
+            url: "{{url_for('main.chart')}}",
+            success:function(result){
+                
+            }
+        })
+	var ctx = document.getElementById('canvas1').getContext('2d');
+    var data = {
+        // The type of chart we want to create
+        type: 'line',
+        // The data for our dataset
+        data: {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [{
+                label: "My First dataset",
+                backgroundColor: 'rgb(255, 99, 132)',
+                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                borderColor: 'rgb(255, 99, 132)',
+                lineTension:0.1, // 값을 높이면, line의 장력이 커짐.
+                data: [0, 10, 5, 2, 20, 30, 45],
+            }]
+        },
+        // Configuration options go here
+        options: {}
+    }
+    var chart = new Chart(ctx, data);
+});		
+
 </script>
 {% endblock %}
