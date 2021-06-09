@@ -1,48 +1,57 @@
-
 <div class="container my-3">
     <div class="row">
-        <div class="col-md-3">
-            <canvas id="canvas1"></canvas>
+        <div class="col-md-3" style="box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px">
+            <canvas id="canvas1" width="270" height="220"></canvas>
+            <canvas id="canvas2" width="270" height="220"></canvas>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" style="padding-left:30px">
             <form method="post" class="post-form">
                 <div class="form-group">
-                    <label for="userid">모집인원 (명)</label>
-                    <input type="text" class="form-control" name="recruit_cnt" id="recruit_cnt">
+                    <label for="userid">모집인원&emsp;&emsp;&emsp;&emsp;&emsp;(명)</label>
+                    <input type="text" class="form-control-sm" name="recruit_cnt" id="recruit_cnt">
                 </div>
                 <div class="form-group">
-                    <label for="text">취업자 (명)</label>
-                    <input type="text" class="form-control" name="emp_cnt" id="emp_cnt">
+                    <label for="text">취업자&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;(명)</label>
+                    <input type="text" class="form-control-sm" name="emp_cnt" id="emp_cnt">
                 </div>
                 <div class="form-group">
-                    <label for="text">등록금 (단위: 천원)</label>
-                    <input type="text" class="form-control" name="payment" id="payment" placeholder="ex) 6500, 7000">
+                    <label for="text">등록금&emsp;&emsp;&emsp;(단위: 천원)</label>
+                    <input type="text" class="form-control-sm" name="payment" id="payment" placeholder="ex) 6500, 7000">
                 </div>
                 <div class="form-group">
-                    <label for="text">지원자 예측치 (명)</label>
-                    <input type="text" class="form-control" name="pre_part" id="pre_part" disabled>
+                    <label for="text">지원자 예측치&emsp;&emsp;&emsp;(명)</label>
+                    <input type="text" class="form-control-sm" name="pre_part" id="pre_part" disabled>
                 </div>
                 <button id="predict_part" type="button"class="btn btn-primary" onclick="dash1()">예측</button>
             </form>
         </div>
-        <div class="col-md-3">
-            <div>그래프</div>
+        <div class="col-md-3" style="box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px">
+            <canvas id="canvas3" width="270" height="220"></canvas>
+            <canvas id="canvas4" width="270" height="220"></canvas>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" style="padding-left:30px">
             <form method="post" class="post-form">
                 <div class="form-group">
-                    <label for="userid">입학정원</label>
-                    <input type="text" class="form-control" name="userid" id="userid">
+                    <label for="userid">취업자&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;(명)</label>
+                    <input type="text" class="form-control-sm" name="emp2_cnt" id="emp2_cnt">
                 </div>
                 <div class="form-group">
-                    <label for="text">모집인원</label>
-                    <input type="text" class="form-control" name="password" id="password">
+                    <label for="text">지원자&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;(명)</label>
+                    <input type="text" class="form-control-sm" name="parti_cnt" id="parti_cnt">
                 </div>
                 <div class="form-group">
-                    <label for="text">입학자</label>
-                    <input type="text" class="form-control" name="password" id="password">
+                    <label for="text">모집인원&emsp;&emsp;&emsp;&emsp;&emsp;(명)</label>
+                    <input type="text" class="form-control-sm" name="recruit2_cnt" id="recruit2_cnt">
                 </div>
-                <button type="submit" class="btn btn-primary">예측</button>
+                <div class="form-group">
+                    <label for="text">등록금&emsp;&emsp;&emsp;(단위: 천원)</label>
+                    <input type="text" class="form-control-sm" name="payment2" id="payment2" placeholder="ex) 6500, 7000">
+                </div>
+                <div class="form-group">
+                    <label for="text">중도탈락 예측치&emsp;&emsp;(명)</label>
+                    <input type="text" class="form-control-sm" name="pre_fail" id="pre_fail" disabled>
+                </div>
+                <button id="predict_fail" type="button"class="btn btn-primary" onclick="dash2()">예측</button>
             </form>
         </div>
     </div>
@@ -72,35 +81,221 @@ function dash1(){
         })
     }
 
+function dash2(){
+    var r2_cnt = $("#recruit2_cnt").val();
+    var e2_cnt = $("#emp2_cnt").val();
+    var pay2 = $("#payment2").val();
+    var parti_cnt = $("#parti_cnt").val();
+    var data = {
+        'recruit' : r2_cnt,
+        'emp'     : e2_cnt,
+        'payment' : pay2,
+        'partici' : parti_cnt
+    }
+        $.ajax({
+            type:'POST',
+            url: "{{url_for('main.dash2')}}",
+            data:data,
+            dataType: "json",
+            success:function(result){
+                $("#pre_fail").val(result.result_data);
+            }
+        })
+    }
+
 $(document).ready(function() {
     $.ajax({
             type:'POST',
             url: "{{url_for('main.chart')}}",
             success:function(result){
+                chart1_data.data.labels = result.year;
+                chart1_data.data.datasets[0].data = result.partici;
+
+                chart2_data.data.labels = result.year;
+                chart2_data.data.datasets[0].data = result.max_enroll;
+
+                chart3_data.data.labels = result.year;
+                chart3_data.data.datasets[0].data = result.fail;
                 
+                chart4_data.data.labels = result.year;
+                chart4_data.data.datasets[0].data = result.drop_out;
+                chart4_data.data.datasets[1].data = result.not_enroll;
+                chart4_data.data.datasets[2].data = result.not_back;
+
+                var chart1 = new Chart(ctx1, chart1_data);
+                var chart2 = new Chart(ctx2, chart2_data);
+                var chart3 = new Chart(ctx3, chart3_data);
+                var chart4 = new Chart(ctx4, chart4_data);
             }
         })
-	var ctx = document.getElementById('canvas1').getContext('2d');
-    var data = {
+	var ctx1 = document.getElementById('canvas1').getContext('2d');
+    var ctx2 = document.getElementById('canvas2').getContext('2d');
+    var ctx3 = document.getElementById('canvas3').getContext('2d');
+    var ctx4 = document.getElementById('canvas4').getContext('2d');
+
+    var chart1_data = {
         // The type of chart we want to create
         type: 'line',
         // The data for our dataset
         data: {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            labels: [],
             datasets: [{
-                label: "My First dataset",
+                label: "지원자",
                 backgroundColor: 'rgb(255, 99, 132)',
                 fill:false, // line의 아래쪽을 색칠할 것인가? 
                 borderColor: 'rgb(255, 99, 132)',
                 lineTension:0.1, // 값을 높이면, line의 장력이 커짐.
-                data: [0, 10, 5, 2, 20, 30, 45],
+                data: [],
             }]
         },
         // Configuration options go here
-        options: {}
+        options: {
+            responsive:false,
+            plugins:{
+                legend:{
+                    title: {
+                        text:'지원자',
+                        position:'end'
+                    },
+                    align: 'center'
+                },
+                title:{
+                    display: true,
+                    text: '전체 지원자 추이'
+                }
+            }
+        }
     }
-    var chart = new Chart(ctx, data);
+
+    var chart2_data = {
+        // The type of chart we want to create
+        type: 'line',
+        // The data for our dataset
+        data: {
+            labels: [],
+            datasets: [{
+                label: "입학정원",
+                backgroundColor: 'rgb(54, 162, 235)',
+                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                borderColor: 'rgb(54, 162, 235)',
+                lineTension:0.1, // 값을 높이면, line의 장력이 커짐.
+                data: [],
+            }]
+        },
+        // Configuration options go here
+        options: {
+            responsive:false,
+            plugins:{
+                legend:{
+                    title: {
+                        text:'입학정원',
+                        position:'end'
+                    },
+                    align: 'center'
+                },
+                title:{
+                    display: true,
+                    text: '전체 입학정원 추이'
+                }
+            }
+        }
+    }
+
+    var chart3_data = {
+        // The type of chart we want to create
+        type: 'line',
+        // The data for our dataset
+        data: {
+            labels: [],
+            datasets: [{
+                label: "중도탈락",
+                backgroundColor: 'rgb(255, 159, 64)',
+                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                borderColor: 'rgb(255, 159, 64)',
+                lineTension:0.1, // 값을 높이면, line의 장력이 커짐.
+                data: [],
+            }]
+        },
+        // Configuration options go here
+        options: {
+            responsive:false,
+            plugins:{
+                legend:{
+                    title: {
+                        text:'중도탈락',
+                        position:'end'
+                    },
+                    align: 'center'
+                },
+                title:{
+                    display: true,
+                    text: '전체 중도탈락 추이'
+                }
+            }
+        }
+    }
+
+    var chart4_data = {
+        // The type of chart we want to create
+        type: 'bar',
+        // The data for our dataset
+        data: {
+            labels: [],
+            datasets: [{
+                label: "자퇴",
+                backgroundColor: 'rgb(255, 99, 132)',
+                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                borderColor: 'rgb(255, 99, 132)',
+                lineTension:0.1, // 값을 높이면, line의 장력이 커짐.
+                data: [],
+            },{
+               label: "미등록",
+                backgroundColor: 'rgb(54, 162, 235)',
+                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                borderColor: 'rgb(54, 162, 235)',
+                lineTension:0.1, // 값을 높이면, line의 장력이 커짐.
+                data: [], 
+            },{
+                label: "미복학",
+                backgroundColor: 'rgb(75, 192, 192)',
+                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                borderColor: 'rgb(75, 192, 192)',
+                lineTension:0.1, // 값을 높이면, line의 장력이 커짐.
+                data: [],
+            }]
+        },
+        // Configuration options go here
+        options: {
+            responsive:false,
+            plugins:{
+                legend:{
+                    title: {
+                        text:'중도탈락',
+                        position:'end'
+                    },
+                    align: 'end'
+                },
+                title:{
+                    display: true,
+                    text: '중도탈락 사유'
+                }
+            },
+            scales:{
+                x:{
+                    stacked:true,
+                },
+                y:{
+                    stacked:true
+                }
+            }
+        }
+    }
 });		
 
 </script>
+<style>
+    .test:{
+        box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px
+    }
+</style>
 {% endblock %}
