@@ -54,6 +54,9 @@
                 </div>
             </form>
         </div>
+        <div class="col-md-4">
+            그래프
+        </div>
     </div>
 </div>
 
@@ -115,7 +118,7 @@ $(document).ready(function() {
                 chart2_data.data.datasets[0].data = result.max_enroll;
 
                 chart3_data.data.labels = result.year;
-                chart3_data.data.datasets[0].data = result.fail;
+                chart3_data.data.datasets[0].data = result.drop_out_total;
                 
                 chart4_data.data.labels = result.year;
                 chart4_data.data.datasets[0].data = result.drop_out;
