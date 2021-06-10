@@ -45,10 +45,11 @@ def dash1():
 
     insert_data = [[recruit,employ,payment]]
     predict_value = mlr.predict(insert_data)
-    
+    m_predict_value = list(map(lambda x:float(x),predict_value))
+
     y_predict = mlr.predict(x_test)
 
-    return jsonify(result = "success", result_data = predict_value[0][0])
+    return jsonify(result = "success", result_data = format(m_predict_value[0],".3f"))
 
 @bp.route('/dash2',methods=['POST'])
 def dash2():
@@ -71,10 +72,11 @@ def dash2():
 
     insert_data = [[employ,parti,recruit,payment]]
     predict_value = mlr.predict(insert_data)
-    
+    m_predict_value = list(map(lambda x:float(x),predict_value))
+ 
     y_predict = mlr.predict(x_test)
 
-    return jsonify(result = "success", result_data = predict_value[0][0])
+    return jsonify(result = "success", result_data = format(m_predict_value[0],".3f"))
 
 @bp.route('/chart',methods=['POST'])
 def chart():

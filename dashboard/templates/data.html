@@ -1,57 +1,57 @@
 <div class="container my-3">
     <div class="row">
-        <div class="col-md-3" style="box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px">
-            <canvas id="canvas1" width="270" height="220"></canvas>
-            <canvas id="canvas2" width="270" height="220"></canvas>
+        <div class="col-md-4" style="box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px">
+            <canvas id="canvas1" width="350" height="200"></canvas>
+            <canvas id="canvas2" width="350" height="200"></canvas>
         </div>
-        <div class="col-md-3" style="padding-left:30px">
+        <div class="col-md-2">
             <form method="post" class="post-form">
                 <div class="form-group">
-                    <label for="userid">모집인원&emsp;&emsp;&emsp;&emsp;&emsp;(명)</label>
-                    <input type="text" class="form-control-sm" name="recruit_cnt" id="recruit_cnt">
+                    <label for="userid">모집인원&emsp;&emsp;&emsp;(명)</label>
+                    <input type="text" class="form-control" name="recruit_cnt" id="recruit_cnt">
                 </div>
                 <div class="form-group">
-                    <label for="text">취업자&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;(명)</label>
-                    <input type="text" class="form-control-sm" name="emp_cnt" id="emp_cnt">
+                    <label for="text">취업자&emsp;&emsp;&emsp;&emsp;(명)</label>
+                    <input type="text" class="form-control" name="emp_cnt" id="emp_cnt">
                 </div>
                 <div class="form-group">
-                    <label for="text">등록금&emsp;&emsp;&emsp;(단위: 천원)</label>
-                    <input type="text" class="form-control-sm" name="payment" id="payment" placeholder="ex) 6500, 7000">
+                    <label for="text">등록금&emsp;(단위: 천원)</label>
+                    <input type="text" class="form-control" name="payment" id="payment" placeholder="ex) 6500, 7000">
                 </div>
-                <div class="form-group">
-                    <label for="text">지원자 예측치&emsp;&emsp;&emsp;(명)</label>
-                    <input type="text" class="form-control-sm" name="pre_part" id="pre_part" disabled>
+                <div class="input-group mb-3">
+                    <label for="text">지원자 예측치&emsp;(명)</label>
+                    <input type="text" class="form-control" name="pre_part" id="pre_part" disabled>
+                    <button id="predict_part" type="button"class="btn btn-primary" onclick="dash1()">예측</button>
                 </div>
-                <button id="predict_part" type="button"class="btn btn-primary" onclick="dash1()">예측</button>
             </form>
         </div>
-        <div class="col-md-3" style="box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px">
-            <canvas id="canvas3" width="270" height="220"></canvas>
-            <canvas id="canvas4" width="270" height="220"></canvas>
+        <div class="col-md-4" style="box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px">
+            <canvas id="canvas3" width="350" height="200"></canvas>
+            <canvas id="canvas4" width="350" height="200"></canvas>
         </div>
-        <div class="col-md-3" style="padding-left:30px">
+        <div class="col-md-2">
             <form method="post" class="post-form">
                 <div class="form-group">
-                    <label for="userid">취업자&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;(명)</label>
-                    <input type="text" class="form-control-sm" name="emp2_cnt" id="emp2_cnt">
+                    <label for="userid">취업자&emsp;&emsp;&emsp;&emsp;(명)</label>
+                    <input type="text" class="form-control" name="emp2_cnt" id="emp2_cnt">
                 </div>
                 <div class="form-group">
-                    <label for="text">지원자&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;(명)</label>
-                    <input type="text" class="form-control-sm" name="parti_cnt" id="parti_cnt">
+                    <label for="text">지원자&emsp;&emsp;&emsp;&emsp;(명)</label>
+                    <input type="text" class="form-control" name="parti_cnt" id="parti_cnt">
                 </div>
                 <div class="form-group">
-                    <label for="text">모집인원&emsp;&emsp;&emsp;&emsp;&emsp;(명)</label>
-                    <input type="text" class="form-control-sm" name="recruit2_cnt" id="recruit2_cnt">
+                    <label for="text">모집인원&emsp;&emsp;&emsp;(명)</label>
+                    <input type="text" class="form-control" name="recruit2_cnt" id="recruit2_cnt">
                 </div>
                 <div class="form-group">
-                    <label for="text">등록금&emsp;&emsp;&emsp;(단위: 천원)</label>
-                    <input type="text" class="form-control-sm" name="payment2" id="payment2" placeholder="ex) 6500, 7000">
+                    <label for="text">등록금&emsp;(단위: 천원)</label>
+                    <input type="text" class="form-control" name="payment2" id="payment2" placeholder="ex) 6500, 7000">
                 </div>
-                <div class="form-group">
-                    <label for="text">중도탈락 예측치&emsp;&emsp;(명)</label>
-                    <input type="text" class="form-control-sm" name="pre_fail" id="pre_fail" disabled>
+                <div class="input-group mb-3">
+                    <label for="text">중도탈락 예측치&emsp;(명)</label>
+                    <input type="text" class="form-control" name="pre_fail" id="pre_fail" disabled>
+                    <button id="predict_fail" type="button"class="btn btn-primary" onclick="dash2()">예측</button>
                 </div>
-                <button id="predict_fail" type="button"class="btn btn-primary" onclick="dash2()">예측</button>
             </form>
         </div>
     </div>
