@@ -1,5 +1,14 @@
 <div class="container my-3">
     <div class="row">
+        <div class="col-md-6" style="box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 8px, rgba(17, 17, 26, 0.05) 0px 8px 8px">
+            <canvas id="canvas5" width="530" height="300"></canvas>
+        </div>
+        <div class="col-md-6" style="box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 4px, rgba(17, 17, 26, 0.05) 0px 8px 8px">
+            <canvas id="canvas6" width="500" height="300"></canvas>
+        </div>
+    </div>
+    <br>
+    <div class="row">
         <div class="col-md-4" style="box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px">
             <canvas id="canvas1" width="350" height="200"></canvas>
             <canvas id="canvas2" width="350" height="200"></canvas>
@@ -20,8 +29,8 @@
                 </div>
                 <div class="input-group mb-3">
                     <label for="text">지원자 예측치&emsp;(명)</label>
-                    <input type="text" class="form-control" name="pre_part" id="pre_part" disabled>
                     <button id="predict_part" type="button"class="btn btn-primary" onclick="dash1()">예측</button>
+                    <input type="text" class="form-control" name="pre_part" id="pre_part" disabled>
                 </div>
             </form>
         </div>
@@ -49,13 +58,23 @@
                 </div>
                 <div class="input-group mb-3">
                     <label for="text">중도탈락 예측치&emsp;(명)</label>
-                    <input type="text" class="form-control" name="pre_fail" id="pre_fail" disabled>
                     <button id="predict_fail" type="button"class="btn btn-primary" onclick="dash2()">예측</button>
+                    <input type="text" class="form-control" name="pre_fail" id="pre_fail" disabled>
                 </div>
             </form>
         </div>
-        <div class="col-md-4">
-            그래프
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-4">└ 예측 모델 정확도 ( 0 < 정확도 < 1 )</div>
+        <div class="col-md-2 input-group mb-2">
+            <button type="button"class="btn btn-info" disabled="disabled">정확도</button>
+            <input type="text" class="form-control" name="dash1_score" id="dash1_score" disabled>
+        </div>
+        <div class="col-md-4">└ 예측 모델 정확도 ( 0 < 정확도 < 1 )</div>
+        <div class="col-md-2 input-group mb-2">
+            <button type="button"class="btn btn-info" disabled="disabled">정확도</button>
+            <input type="text" class="form-control" name="dash2_score" id="dash2_score" disabled>
         </div>
     </div>
 </div>
@@ -80,6 +99,7 @@ function dash1(){
             dataType: "json",
             success:function(result){
                 $("#pre_part").val(result.result_data);
+                $("#dash1_score").val(result.score);
             }
         })
     }
@@ -102,6 +122,7 @@ function dash2(){
             dataType: "json",
             success:function(result){
                 $("#pre_fail").val(result.result_data);
+                $("#dash2_score").val(result.score);
             }
         })
     }
@@ -125,16 +146,24 @@ $(document).ready(function() {
                 chart4_data.data.datasets[1].data = result.not_enroll;
                 chart4_data.data.datasets[2].data = result.not_back;
 
+                chart5_data.data.labels = result.signin_label;
+                chart5_data.data.datasets[0].data = result.signin_1;
+                chart5_data.data.datasets[1].data = result.signin_2;
+                chart5_data.data.datasets[2].data = result.signin_3;
+
                 var chart1 = new Chart(ctx1, chart1_data);
                 var chart2 = new Chart(ctx2, chart2_data);
                 var chart3 = new Chart(ctx3, chart3_data);
                 var chart4 = new Chart(ctx4, chart4_data);
+                var chart5 = new Chart(ctx5, chart5_data);
+
             }
         })
 	var ctx1 = document.getElementById('canvas1').getContext('2d');
     var ctx2 = document.getElementById('canvas2').getContext('2d');
     var ctx3 = document.getElementById('canvas3').getContext('2d');
     var ctx4 = document.getElementById('canvas4').getContext('2d');
+    var ctx5 = document.getElementById('canvas5').getContext('2d');
 
     var chart1_data = {
         // The type of chart we want to create
@@ -289,6 +318,46 @@ $(document).ready(function() {
                 },
                 y:{
                     stacked:true
+                }
+            }
+        }
+    }
+
+    var chart5_data = {
+        // The type of chart we want to create
+        type: 'bar',
+        // The data for our dataset
+        data: {
+            labels: [],
+            datasets: [{
+                label: "2018",
+                fill:true, // line의 아래쪽을 색칠할 것인가? 
+                data: [],
+                backgroundColor: 'rgb(75, 192, 192)'
+            },{
+                label: "2019",
+                fill:true,
+                data: [],
+                backgroundColor: 'rgb(152, 108, 232)',
+            },{
+                label: "2020",
+                fill:true,
+                data: [],
+                backgroundColor: 'rgb(255, 99, 132)',
+            }]
+        },
+        // Configuration options go here
+        options: {
+            indexAxis: 'y',
+            responsive:false,
+            plugins:{
+                legend:{
+                        position:'top'
+                    },
+                align: 'center',
+                title:{
+                    display: true,
+                    text: '3개년 입학 유형'
                 }
             }
         }

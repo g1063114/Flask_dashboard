@@ -49,8 +49,9 @@ def dash1():
     m_predict_value = list(map(lambda x:float(x),predict_value))
 
     y_predict = mlr.predict(x_test)
+    score = mlr.score(x_train,y_train)
 
-    return jsonify(result = "success", result_data = format(m_predict_value[0],".3f"))
+    return jsonify(result = "success", result_data = format(m_predict_value[0],".3f"), score=format(score,".3f"))
 
 @bp.route('/dash2',methods=['POST'])
 def dash2():
@@ -76,12 +77,14 @@ def dash2():
     m_predict_value = list(map(lambda x:float(x),predict_value))
  
     y_predict = mlr.predict(x_test)
+    score = mlr.score(x_train,y_train)
 
-    return jsonify(result = "success", result_data = format(m_predict_value[0],".3f"))
+    return jsonify(result = "success", result_data = format(m_predict_value[0],".3f"), score=format(score,".3f"))
 
 @bp.route('/chart',methods=['POST'])
 def chart():
     year = [2012,2013,2014,2015,2016,2017,2018,2019,2020]
+    year_3 = [2018,2019,2020]
 
     partici = list(student.groupby('info_yyyy').sum()['지원자'].values)
     max_enroll = list(student.groupby('info_yyyy').sum()['입학정원'].values)
@@ -91,19 +94,28 @@ def chart():
     not_back = list(drop_out.groupby('info_yyyy').sum()['미복학'].values)
     leave = list(drop_out.groupby('info_yyyy').sum()['자퇴'].values)
 
-    # occasional = list(enter_type.groupby('info_yyyy').sum()['수시'].values)
-    # regular = list(enter_type.groupby('info_yyyy').sum()['정시'].values)
-    # additional = list(enter_type.groupby('info_yyyy').sum()['추가'].values)
-    # final = list(enter_type.sum()['최종'].values)
+    temp = enter_type.groupby(['info_yyyy','jh_type']).sum()
+    temp['합계'] = temp['수시등록'] +temp['정시등록']+temp['추가등록']
+    signin = pd.pivot_table(temp,index='jh_type', columns='info_yyyy',values=['합계'], aggfunc='sum')
     
-    # print(occasional)
-    
-    # numpy 객체를 -> list 객체로 변환
+    signin_1 = list(signin['합계'].iloc[:,0].values)
+    signin_2 = list(signin['합계'].iloc[:,1].values)
+    signin_3 = list(signin['합계'].iloc[:,2].values)
+
+    label_temp = list(enter_type['jh_type'].drop_duplicates())
+    signin_label = sorted(label_temp)
+
+    # numpy 객체 값을 -> int,str list로 변환
     m_partici = list(map(lambda x:int(x),partici))
     m_max_enroll = list(map(lambda x:int(x),max_enroll))
     m_drop_out_total = list(map(lambda x:int(x),drop_out_values))
     m_not_enroll = list(map(lambda x:int(x),not_enroll))
     m_not_back = list(map(lambda x:int(x),not_back))
     m_drop_out = list(map(lambda x:int(x),leave))
+    m_signin_1 = list(map(lambda x:str(x),signin_1))
+    m_signin_2 = list(map(lambda x:str(x),signin_2))
+    m_signin_3 = list(map(lambda x:str(x),signin_3))
 
-    return jsonify(result="success", year=year, partici=m_partici, max_enroll=m_max_enroll, drop_out_total=m_drop_out_total, not_enroll=m_not_enroll, not_back=m_not_back, drop_out=m_drop_out)
+    return jsonify(result="success", year=year, partici=m_partici, max_enroll=m_max_enroll, drop_out_total=m_drop_out_total, 
+                    not_enroll=m_not_enroll, not_back=m_not_back, drop_out=m_drop_out,
+                    signin_1=m_signin_1, signin_2=m_signin_2,signin_3=m_signin_3, year3=year_3, signin_label=signin_label)
