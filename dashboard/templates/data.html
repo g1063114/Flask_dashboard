@@ -135,28 +135,35 @@ $(document).ready(function() {
             type:'POST',
             url: "{{url_for('main.chart')}}",
             success:function(result){
+                // 전체 대학 지원자 추이
                 chart1_data.data.labels = result.year;
                 chart1_data.data.datasets[0].data = result.partici;
 
+                // 전체 대학 입학정원 추이
                 chart2_data.data.labels = result.year;
                 chart2_data.data.datasets[0].data = result.max_enroll;
 
+                // 전체 대학 중도탈락 추이
                 chart3_data.data.labels = result.year;
                 chart3_data.data.datasets[0].data = result.drop_out_total;
                 
+                // 대학 중도탈락 사유
                 chart4_data.data.labels = result.year;
                 chart4_data.data.datasets[0].data = result.drop_out;
                 chart4_data.data.datasets[1].data = result.not_enroll;
                 chart4_data.data.datasets[2].data = result.not_back;
 
+                // 3개년 입학 유형
                 chart5_data.data.labels = result.signin_label;
                 chart5_data.data.datasets[0].data = result.signin_1;
                 chart5_data.data.datasets[1].data = result.signin_2;
                 chart5_data.data.datasets[2].data = result.signin_3;
 
+                // 연계취업자 추이
                 chart6_data.data.labels = result.year;
                 chart6_data.data.datasets[0].data = result.job_emp;
 
+                // 해외취업, 진학자 추이
                 chart7_data.data.labels = result.year;
                 chart7_data.data.datasets[0].data = result.job_overseas;
                 chart7_data.data.datasets[0].yAxisID = 'y';
@@ -208,28 +215,25 @@ $(document).ready(function() {
                 },
                 title:{
                     display: true,
-                    text: '전체 지원자 추이'
+                    text: '전체 대학 지원자 추이'
                 }
             }
         }
     }
 
     var chart2_data = {
-        // The type of chart we want to create
         type: 'line',
-        // The data for our dataset
         data: {
             labels: [],
             datasets: [{
                 label: "입학정원",
                 backgroundColor: 'rgb(54, 162, 235)',
-                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                fill:false, 
                 borderColor: 'rgb(54, 162, 235)',
-                lineTension:0.1, // 값을 높이면, line의 장력이 커짐.
+                lineTension:0.1, 
                 data: [],
             }]
         },
-        // Configuration options go here
         options: {
             responsive:false,
             plugins:{
@@ -242,28 +246,25 @@ $(document).ready(function() {
                 },
                 title:{
                     display: true,
-                    text: '전체 입학정원 추이'
+                    text: '전체 대학 입학정원 추이'
                 }
             }
         }
     }
 
     var chart3_data = {
-        // The type of chart we want to create
         type: 'line',
-        // The data for our dataset
         data: {
             labels: [],
             datasets: [{
                 label: "중도탈락",
                 backgroundColor: 'rgb(255, 159, 64)',
-                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                fill:false, 
                 borderColor: 'rgb(255, 159, 64)',
-                lineTension:0.1, // 값을 높이면, line의 장력이 커짐.
+                lineTension:0.1, 
                 data: [],
             }]
         },
-        // Configuration options go here
         options: {
             responsive:false,
             plugins:{
@@ -276,42 +277,39 @@ $(document).ready(function() {
                 },
                 title:{
                     display: true,
-                    text: '전체 중도탈락 추이'
+                    text: '전체 대학 중도탈락 추이'
                 }
             }
         }
     }
 
     var chart4_data = {
-        // The type of chart we want to create
         type: 'bar',
-        // The data for our dataset
         data: {
             labels: [],
             datasets: [{
                 label: "자퇴",
                 backgroundColor: 'rgb(255, 99, 132)',
-                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                fill:false, 
                 borderColor: 'rgb(255, 99, 132)',
-                lineTension:0.1, // 값을 높이면, line의 장력이 커짐.
+                lineTension:0.1, 
                 data: [],
             },{
                label: "미등록",
                 backgroundColor: 'rgb(54, 162, 235)',
-                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                fill:false, 
                 borderColor: 'rgb(54, 162, 235)',
-                lineTension:0.1, // 값을 높이면, line의 장력이 커짐.
+                lineTension:0.1, 
                 data: [], 
             },{
                 label: "미복학",
                 backgroundColor: 'rgb(75, 192, 192)',
-                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                fill:false, 
                 borderColor: 'rgb(75, 192, 192)',
-                lineTension:0.1, // 값을 높이면, line의 장력이 커짐.
+                lineTension:0.1, 
                 data: [],
             }]
         },
-        // Configuration options go here
         options: {
             responsive:false,
             plugins:{
@@ -324,7 +322,7 @@ $(document).ready(function() {
                 },
                 title:{
                     display: true,
-                    text: '중도탈락 사유'
+                    text: '대학 중도탈락 사유'
                 }
             },
             scales:{
@@ -339,14 +337,12 @@ $(document).ready(function() {
     }
 
     var chart5_data = {
-        // The type of chart we want to create
         type: 'bar',
-        // The data for our dataset
         data: {
             labels: [],
             datasets: [{
                 label: "2018",
-                fill:true, // line의 아래쪽을 색칠할 것인가? 
+                fill:true, 
                 data: [],
                 backgroundColor: 'rgb(75, 192, 192)'
             },{
@@ -361,7 +357,6 @@ $(document).ready(function() {
                 backgroundColor: 'rgb(255, 99, 132)',
             }]
         },
-        // Configuration options go here
         options: {
             indexAxis: 'y',
             responsive:false,
@@ -372,26 +367,23 @@ $(document).ready(function() {
                 align: 'center',
                 title:{
                     display: true,
-                    text: '3개년 입학 유형'
+                    text: '전체 대학 3개년 입학 유형'
                 }
             }
         }
     }
 
     var chart6_data = {
-        // The type of chart we want to create
         type: 'bar',
-        // The data for our dataset
         data: {
             labels: [],
             datasets: [{
                 label: "연계취업자",
                 backgroundColor: 'rgb(75, 192, 192)',
-                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                fill:false, 
                 data: [],
             }]
         },
-        // Configuration options go here
         options: {
             responsive:false,
             plugins:{
@@ -404,16 +396,14 @@ $(document).ready(function() {
                 },
                 title:{
                     display: true,
-                    text: '전체 연계취업자 추이'
+                    text: '전체 대학 연계취업자 추이'
                 }
             }
         }
     }
 
     var chart7_data = {
-        // The type of chart we want to create
         type: 'line',
-        // The data for our dataset
         data: {
             labels: [],
             datasets: [{
@@ -421,18 +411,17 @@ $(document).ready(function() {
                 backgroundColor: 'rgb(152, 108, 232)',
                 borderColor: 'rgb(152, 108, 232)',
                 lineTension:0.1,
-                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                fill:false, 
                 data: [],
             },{
                 label: "진학자",
                 backgroundColor: 'rgb(255, 159, 64)',
                 borderColor: 'rgb(255, 159, 64)',
                 lineTension:0.1,
-                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                fill:false, 
                 data: [],
             }]
         },
-        // Configuration options go here
         options: {
             responsive:true,
             interaction:{
@@ -446,7 +435,7 @@ $(document).ready(function() {
                 },
                 title:{
                     display: true,
-                    text: '해외취업, 진학자 추이'
+                    text: '전체 대학 해외취업, 진학자 추이'
                 }
             },
             scales: {
@@ -466,9 +455,4 @@ $(document).ready(function() {
 });		
 
 </script>
-<style>
-    .test:{
-        box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px
-    }
-</style>
 {% endblock %}
