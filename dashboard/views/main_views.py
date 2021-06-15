@@ -94,6 +94,11 @@ def chart():
     not_back = list(drop_out.groupby('info_yyyy').sum()['미복학'].values)
     leave = list(drop_out.groupby('info_yyyy').sum()['자퇴'].values)
 
+    job_emp = list(job.groupby('info_yyyy').sum()['연계취업자'].values)
+    job_overseas = list(job.groupby('info_yyyy').sum()['해외취업자'].values)
+    job_study = list(job.groupby('info_yyyy').sum()['진학자'].values)
+
+    # 3개년 입학 유형
     temp = enter_type.groupby(['info_yyyy','jh_type']).sum()
     temp['합계'] = temp['수시등록'] +temp['정시등록']+temp['추가등록']
     signin = pd.pivot_table(temp,index='jh_type', columns='info_yyyy',values=['합계'], aggfunc='sum')
@@ -115,7 +120,11 @@ def chart():
     m_signin_1 = list(map(lambda x:str(x),signin_1))
     m_signin_2 = list(map(lambda x:str(x),signin_2))
     m_signin_3 = list(map(lambda x:str(x),signin_3))
+    m_job_emp = list(map(lambda x:int(x),job_emp))
+    m_job_overseas = list(map(lambda x:int(x),job_overseas))
+    m_job_study = list(map(lambda x:int(x),job_study))
 
     return jsonify(result="success", year=year, partici=m_partici, max_enroll=m_max_enroll, drop_out_total=m_drop_out_total, 
                     not_enroll=m_not_enroll, not_back=m_not_back, drop_out=m_drop_out,
-                    signin_1=m_signin_1, signin_2=m_signin_2,signin_3=m_signin_3, year3=year_3, signin_label=signin_label)
+                    signin_1=m_signin_1, signin_2=m_signin_2,signin_3=m_signin_3, year3=year_3, signin_label=signin_label,
+                    job_emp=m_job_emp, job_overseas=m_job_overseas,job_study=m_job_study)

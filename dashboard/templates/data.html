@@ -1,10 +1,13 @@
 <div class="container my-3">
     <div class="row">
-        <div class="col-md-6" style="box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 8px, rgba(17, 17, 26, 0.05) 0px 8px 8px">
-            <canvas id="canvas5" width="530" height="300"></canvas>
+        <div class="col-md-4" style="box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 8px, rgba(17, 17, 26, 0.05) 0px 8px 8px">
+            <canvas id="canvas5" width="350" height="300"></canvas>
         </div>
-        <div class="col-md-6" style="box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 4px, rgba(17, 17, 26, 0.05) 0px 8px 8px">
-            <canvas id="canvas6" width="500" height="300"></canvas>
+        <div class="col-md-4" style="box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 4px, rgba(17, 17, 26, 0.05) 0px 8px 8px">
+            <canvas id="canvas6" width="350" height="300"></canvas>
+        </div>
+        <div class="col-md-4" style="box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 4px, rgba(17, 17, 26, 0.05) 0px 8px 8px">
+            <canvas id="canvas7" width="350" height="300"></canvas>
         </div>
     </div>
     <br>
@@ -151,12 +154,22 @@ $(document).ready(function() {
                 chart5_data.data.datasets[1].data = result.signin_2;
                 chart5_data.data.datasets[2].data = result.signin_3;
 
+                chart6_data.data.labels = result.year;
+                chart6_data.data.datasets[0].data = result.job_emp;
+
+                chart7_data.data.labels = result.year;
+                chart7_data.data.datasets[0].data = result.job_overseas;
+                chart7_data.data.datasets[0].yAxisID = 'y';
+                chart7_data.data.datasets[1].data = result.job_study;
+                chart7_data.data.datasets[1].yAxisID = 'y1';
+
                 var chart1 = new Chart(ctx1, chart1_data);
                 var chart2 = new Chart(ctx2, chart2_data);
                 var chart3 = new Chart(ctx3, chart3_data);
                 var chart4 = new Chart(ctx4, chart4_data);
                 var chart5 = new Chart(ctx5, chart5_data);
-
+                var chart6 = new Chart(ctx6, chart6_data);
+                var chart7 = new Chart(ctx7, chart7_data);
             }
         })
 	var ctx1 = document.getElementById('canvas1').getContext('2d');
@@ -164,6 +177,8 @@ $(document).ready(function() {
     var ctx3 = document.getElementById('canvas3').getContext('2d');
     var ctx4 = document.getElementById('canvas4').getContext('2d');
     var ctx5 = document.getElementById('canvas5').getContext('2d');
+    var ctx6 = document.getElementById('canvas6').getContext('2d');
+    var ctx7 = document.getElementById('canvas7').getContext('2d');
 
     var chart1_data = {
         // The type of chart we want to create
@@ -358,6 +373,92 @@ $(document).ready(function() {
                 title:{
                     display: true,
                     text: '3개년 입학 유형'
+                }
+            }
+        }
+    }
+
+    var chart6_data = {
+        // The type of chart we want to create
+        type: 'bar',
+        // The data for our dataset
+        data: {
+            labels: [],
+            datasets: [{
+                label: "연계취업자",
+                backgroundColor: 'rgb(75, 192, 192)',
+                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                data: [],
+            }]
+        },
+        // Configuration options go here
+        options: {
+            responsive:false,
+            plugins:{
+                legend:{
+                    title: {
+                        text:'연계취업자',
+                        position:'end'
+                    },
+                    align: 'center'
+                },
+                title:{
+                    display: true,
+                    text: '전체 연계취업자 추이'
+                }
+            }
+        }
+    }
+
+    var chart7_data = {
+        // The type of chart we want to create
+        type: 'line',
+        // The data for our dataset
+        data: {
+            labels: [],
+            datasets: [{
+                label: "해외취업자",
+                backgroundColor: 'rgb(152, 108, 232)',
+                borderColor: 'rgb(152, 108, 232)',
+                lineTension:0.1,
+                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                data: [],
+            },{
+                label: "진학자",
+                backgroundColor: 'rgb(255, 159, 64)',
+                borderColor: 'rgb(255, 159, 64)',
+                lineTension:0.1,
+                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                data: [],
+            }]
+        },
+        // Configuration options go here
+        options: {
+            responsive:true,
+            interaction:{
+                mode:'index',
+                intersect: false,
+            },
+            stacked: false,
+            plugins:{
+                legend:{
+                    position: 'top'
+                },
+                title:{
+                    display: true,
+                    text: '해외취업, 진학자 추이'
+                }
+            },
+            scales: {
+                y:{
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                },
+                y1:{
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
                 }
             }
         }
