@@ -10,7 +10,6 @@ from datetime import datetime
 
 upload_path = 'C:\\projects\\Flask_dashboard\\dashboard\\upload\\'
 ROW_PER_PAGE = 10
-UNIQUE_NUM = 1
 
 bp = Blueprint('board',__name__,url_prefix='/board')
 
@@ -42,10 +41,9 @@ def upload():
         file_name = file.filename
 
         is_exist = File.query.filter_by(name=file_name).first()
-        print(is_exist)
         if is_exist != None:
-            file_name = file_name.replace(".",f"({UNIQUE_NUM}).")
-            UNIQUE_NUM = UNIQUE_NUM + 1
+            unique_time = datetime.now().strftime('%y%m%d_%H%M%S')
+            file_name = file_name.replace(".",f"_{unique_time}.")
         
         file_path = os.path.join(upload_path)
         file.save(file_path + file_name)

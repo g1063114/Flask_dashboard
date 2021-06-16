@@ -42,6 +42,15 @@
     {% endif %}
     <!-- 페이징 처리 -->
     <ul class="pagination justify-content-center">
+      {% if file_list.has_prev%}
+        <li class="page-item">
+          <a class="page-link" href="?page={{file_list.prev_num}}"><</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" tabindex="-1" aria-disabled="true" href="#"><</a>
+        </li>
+      {% endif %}
       {% for pages in file_list.iter_pages() %}
         {% if pages %}
           {% if pages != file_list.page %}
@@ -59,6 +68,15 @@
           </li>
         {% endif %}
       {% endfor %}
+      {% if file_list.has_next%}
+        <li class="page-item">
+          <a class="page-link" href="?page={{file_list.next_num}}">></a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" tabindex="-1" aria-disabled="true" href="#">></a>
+        </li>
+      {% endif %}
     </ul>
 </div>
 
