@@ -6,7 +6,7 @@
         <thead>
         <tr class="thead-dark">
             <th>번호</th>
-            <th>제목</th>
+            <th>다운로드</th>
             <th>작성일시</th>
             {% if g.user.userid == 'admin' %}
             <th>삭제</th>
@@ -15,7 +15,7 @@
         </thead>
         <tbody>
         {% if file_list %}
-        {% for file in file_list %}
+        {% for file in file_list.items %}
         <tr>
             <td>{{ loop.index }}</td>
             <td>
@@ -40,6 +40,26 @@
     {% if g.user.userid == 'admin' %}
     <button id="upload" type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal">업로드</button>
     {% endif %}
+    <!-- 페이징 처리 -->
+    <ul class="pagination justify-content-center">
+      {% for pages in file_list.iter_pages() %}
+        {% if pages %}
+          {% if pages != file_list.page %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{pages}}">{{pages}}</a>
+          </li>
+          {% else %}
+          <li class="page-item-active" aria-current="page">
+            <a class="page-link" href="#">{{pages}}</a>
+          </li>
+          {% endif %}
+        {% else %}
+          <li class="disabled">
+            <a class="page-link" href="#">...</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
 </div>
 
 <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

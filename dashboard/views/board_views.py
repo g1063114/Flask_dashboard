@@ -9,6 +9,8 @@ from dashboard.models import User,File
 from datetime import datetime
 
 upload_path = 'C:\\projects\\Flask_dashboard\\dashboard\\upload\\'
+ROW_PER_PAGE = 10
+UNIQUE_NUM = 1
 
 bp = Blueprint('board',__name__,url_prefix='/board')
 
@@ -17,7 +19,9 @@ def link():
     if g.user is None:
         return redirect(url_for('auth.login'))
     else:
+        page = request.args.get('page', type=int, default=1)
         file_list = File.query.order_by(File.create_date.desc())
+        file_list = file_list.paginate(page, per_page=ROW_PER_PAGE)
         is_file = File.query.order_by(File.create_date.desc()).first()
         return render_template('board/board.html',file_list=file_list,is_file=is_file)
 
@@ -36,6 +40,13 @@ def upload():
     if request.method == 'POST':
         file = request.files['file']
         file_name = file.filename
+
+        is_exist = File.query.filter_by(name=file_name).first()
+        print(is_exist)
+        if is_exist != None:
+            file_name = file_name.replace(".",f"({UNIQUE_NUM}).")
+            UNIQUE_NUM = UNIQUE_NUM + 1
+        
         file_path = os.path.join(upload_path)
         file.save(file_path + file_name)
 
