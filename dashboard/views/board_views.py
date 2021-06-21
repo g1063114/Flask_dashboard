@@ -35,14 +35,14 @@ def download(file):
 @bp.route('/upload',methods=('GET','POST'))
 def upload():
     if g.user is None:
-        return redirect(url_for('auth.login'))
+        return redirect(url_for('auth.login')) 
     if request.method == 'POST':
         file = request.files['file']
         file_name = file.filename
 
         is_exist = File.query.filter_by(name=file_name).first()
         if is_exist != None:
-            unique_time = datetime.now().strftime('%y%m%d_%H%M%S')
+            unique_time = datetime.now().strftime('%y%m%d_%H%M%S')          
             file_name = file_name.replace(".",f"_{unique_time}.")
         
         file_path = os.path.join(upload_path)
