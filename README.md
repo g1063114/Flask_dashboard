@@ -12,7 +12,7 @@ apache 연동
 1. 서버에 가상환경 세팅
 2. Apache 다운
 3. pip install mod_wsgi
-4. cmd -> mod_wsgi_express module-config
+4. cmd -> mod_wsgi-express module-config
 5. httpd.conf 설정
 6. 포트 번호 설정
 7. .wsgi 파일 생성
