@@ -23,10 +23,6 @@ def start_app():
 def main_app():
     return render_template('main.html')
 
-@bp.route('/export')
-def export():
-    return send_file('test.xlsx')
-
 @bp.route('/dash1',methods=['POST'])
 def dash1():
     temp = pd.merge(student,job, on=['info_yyyy','univ_id'],how ='inner').fillna(0)
