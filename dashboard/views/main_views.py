@@ -9,6 +9,7 @@ import io
 
 bp = Blueprint('main',__name__,url_prefix='/')
 
+# pandas 라이브러리 사용 -> csv 파일 읽어오기
 pay = pd.read_csv('C:\\projects\\Flask_dashboard\\dashboard\\data\\등록금현황.csv', encoding='cp949')
 student = pd.read_csv('C:\\projects\\Flask_dashboard\\dashboard\\data\\신입생충원현황.csv', encoding='cp949')
 drop_out = pd.read_csv('C:\\projects\\Flask_dashboard\\dashboard\\data\\중도탈락현황.csv', encoding='cp949')
@@ -25,9 +26,11 @@ def main_app():
 
 @bp.route('/dash1',methods=['POST'])
 def dash1():
+    # inner join 하고 빈 값은 0으로 채움
     temp = pd.merge(student,job, on=['info_yyyy','univ_id'],how ='inner').fillna(0)
     merge_data = pd.merge(temp,pay, on=['info_yyyy','univ_id'],how ='inner').fillna(0)
 
+    # form 데이터 값 가져오기
     recruit = request.form['recruit']
     employ = request.form['emp']
     payment = request.form['payment']
@@ -35,8 +38,10 @@ def dash1():
     x = merge_data[['모집인원','연계취업자','등록금']]
     y = merge_data[['지원자']]
 
+    # 트레이닝 값 과 테스트 할 값 나누기 8 : 2 정도로
     x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, test_size=0.2)
 
+    # 선형회귀 라이브러리 사용
     mlr = LinearRegression() 
     mlr.fit(x_train, y_train) 
 
@@ -44,9 +49,11 @@ def dash1():
     predict_value = mlr.predict(insert_data)
     m_predict_value = list(map(lambda x:float(x),predict_value))
 
+    # 값 예측
     y_predict = mlr.predict(x_test)
     score = mlr.score(x_train,y_train)
 
+    # json으로 return 
     return jsonify(result = "success", result_data = format(m_predict_value[0],".3f"), score=format(score,".3f"))
 
 @bp.route('/dash2',methods=['POST'])
@@ -82,6 +89,7 @@ def chart():
     year = [2012,2013,2014,2015,2016,2017,2018,2019,2020]
     year_3 = [2018,2019,2020]
 
+    # db group by와 기능 동일 groupby 하고 sum
     partici = list(student.groupby('info_yyyy').sum()['지원자'].values)
     max_enroll = list(student.groupby('info_yyyy').sum()['입학정원'].values)
 

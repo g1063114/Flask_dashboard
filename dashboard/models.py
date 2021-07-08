@@ -1,5 +1,6 @@
 from dashboard import db
 
+# db User table
 class User(db.Model):
     key = db.Column(db.Integer, primary_key=True)
     userid = db.Column(db.String(150), unique=True, nullable=False)
@@ -9,6 +10,7 @@ class User(db.Model):
     dept = db.Column(db.String(120), nullable=False)
     create_date = db.Column(db.DateTime(),nullable=False)
 
+# db File table
 class File(db.Model):
     key = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(300),nullable=False)

@@ -4,6 +4,7 @@ from wtforms import StringField, TextAreaField, PasswordField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, Length, EqualTo, Email, Regexp
 
+# user sign-in form 
 class UserCreateForm(FlaskForm):
     userid = StringField('사용자아이디',validators=[DataRequired('아이디 입력은 필수 항목입니다.'),Length(min=3,max=25)])
     password1 = PasswordField('비밀번호',validators=[DataRequired('비밀번호 입력은 필수 항목입니다.'),EqualTo('password2','비밀번호가 일치하지 않습니다.')])
@@ -12,10 +13,12 @@ class UserCreateForm(FlaskForm):
     univ = StringField('소속 대학교',validators=[DataRequired('소속 대학교 입력은 필수 항목입니다.'),Length(min=3,max=20)])
     dept = StringField('소속 부서',validators=[DataRequired('소속 부서 입력은 필수 항목입니다.')])
 
+# user login form 
 class UserLoginForm(FlaskForm):
     userid = StringField('사용자아이디',validators=[DataRequired('아이디 입력은 필수 항목입니다.'),Length(min=3,max=25)])
     password = PasswordField('비밀번호',validators=[DataRequired('비밀번호 입력은 필수 항목입니다.')])
 
+# user reset password form 
 class UserResetPasswordForm(FlaskForm):
     userid = StringField('사용자아이디',validators=[DataRequired('아이디 입력은 필수 항목입니다.'),Length(min=3,max=25)])
     password = PasswordField('새로운 비밀번호',validators=[DataRequired('비밀번호 입력은 필수 항목입니다.'),EqualTo('password2','비밀번호가 일치하지 않습니다.')])

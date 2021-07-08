@@ -12,10 +12,13 @@ bp = Blueprint('auth',__name__,url_prefix='/auth')
 
 @bp.route('/signup/',methods=('GET','POST'))
 def signup():
+    # form 객체 생성
     form = UserCreateForm()
     if request.method == 'POST' and form.validate_on_submit():
         user = User.query.filter_by(userid=form.userid.data).first()
         if not user:
+            # db에 user 가 없으면 저장 
+            # 비밀번호는 hash 암호화 적용해서 저장
             user = User(userid=form.userid.data, password=generate_password_hash(form.password1.data),
                         email=form.email.data, univ=form.univ.data, dept=form.dept.data, create_date=datetime.now())
             db.session.add(user)
@@ -36,6 +39,7 @@ def login():
         elif not check_password_hash(user.password,form.password.data):
             error = '비밀번호가 일치하지 않습니다.'
         if error is None:
+            # 세션에 유저 정보 저장
             session.clear()
             session['user_id'] = user.key
             return redirect(url_for('main.start_app'))
