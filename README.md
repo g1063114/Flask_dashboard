@@ -4,9 +4,7 @@
 
 사용한 기술
 
-Python3
-Flask Framework
-ORM
+Python3, Flask Framework, ORM
 
 # Flask_dashboard
 flask_dashboard
