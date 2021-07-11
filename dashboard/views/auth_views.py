@@ -65,10 +65,11 @@ def reset():
     if request.method == 'POST' and form.validate_on_submit():
         error = None
         user = User.query.filter_by(userid=form.userid.data).first()
-        print(user)
         if not user:
             error = '존재하지 않는 사용자입니다.'
         else:
+            # 사용자가 존재하는지만 체크 
+            # 비밀번호는 암호화 해서 저장했기 때문에 비교 불가 따라서 비밀번호 새로 저장
             user.password = generate_password_hash(form.password.data)
             db.session.commit()
             return redirect(url_for('main.start_app'))
