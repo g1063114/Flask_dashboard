@@ -1,3 +1,11 @@
+# Python을 활용한 통합 페이지 구현 및 데이터 분석 대시보드 프로젝트
+
+기존 메일 전송 방식에서 통합 페이지 구현으로 업무 생산성 향상
+
+사용한 기술
+
+Python3, Flask Framework, ORM
+
 # Flask_dashboard
 flask_dashboard
 
