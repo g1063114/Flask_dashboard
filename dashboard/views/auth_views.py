@@ -18,11 +18,13 @@ bp = Blueprint('auth',__name__,url_prefix='/auth')
 def signup():
     # form 객체 생성
     form = UserCreateForm()
-    if request.method == 'POST' and form.validate_on_submit():  # 폼 데이터에 문제 없는지 체크
+    if request.method == 'POST' and form.validate_on_submit():  # form 데이터에 문제 없는지 체크
         user = User.query.filter_by(userid=form.userid.data).first()   # db select와 동일. select * from user where userid = form.userid
         if not user:
             # db에 user 가 없으면 저장 
             # 비밀번호는 hash 암호화 적용해서 저장
+            # 사용자의 비밀번호를 그대로 저장하면 보안상 문제가 있을 수 있음
+            # 따라서 비밀번호를 그대로 저장하는 것 보다 암호화 해서 저장하는게 보안 상 좋음
             user = User(userid=form.userid.data, password=generate_password_hash(form.password1.data),
                         email=form.email.data, univ=form.univ.data, dept=form.dept.data, create_date=datetime.now())
             db.session.add(user)    # db에 추가

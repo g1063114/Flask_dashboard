@@ -5,12 +5,17 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()       # 전역으로 설정.  다른데서 가져오기 편함
 migrate = Migrate()
 
+# 페이지 요청 잘못했을 때 보여지는 화면
 def page_not_found(e):
     return render_template('404.html'),404
 
+# url 요청하면 처음으로 들어오는 곳
+# Flask 객체를 만들어서 config 파일 설정하고 db 설정하고
+# url 경로 매핑을 쉽게 하기 위해서 blueprint 사용해서 HTTP API 구현
+
 def create_app():
     app = Flask(__name__)
-
+    
     # config
     app.config.from_envvar('APP_CONFIG_FILE')
 
