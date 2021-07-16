@@ -4,7 +4,12 @@ from wtforms import StringField, TextAreaField, PasswordField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, Length, EqualTo, Email, Regexp
 
+# html에서 사용할 form 정보 객체 생성
 # user sign-in form 
+# StringField -> 문자 필드
+# PasswordField -> 비밀번호 필드
+# EmailField -> 이메일 필드
+# DataRequired -> 사용자가 해당 필드 입력 안했을 때 나오는 메세지
 class UserCreateForm(FlaskForm):
     userid = StringField('사용자아이디',validators=[DataRequired('아이디 입력은 필수 항목입니다.'),Length(min=3,max=25)])
     password1 = PasswordField('비밀번호',validators=[DataRequired('비밀번호 입력은 필수 항목입니다.'),EqualTo('password2','비밀번호가 일치하지 않습니다.')])

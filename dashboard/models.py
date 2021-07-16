@@ -1,5 +1,6 @@
 from dashboard import db
 
+# DB에 저장될 테이블, 객체
 # db User table
 class User(db.Model):
     key = db.Column(db.Integer, primary_key=True)
